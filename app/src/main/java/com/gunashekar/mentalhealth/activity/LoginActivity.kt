@@ -18,15 +18,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-//        val currentUser = auth.currentUser
-//
-//        //check if user login then navigate to user screen
-//        if (currentUser != null) {
-//            Toast.makeText(applicationContext, "Direct Login", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
+        val currentUser = auth.currentUser
+
+        //check if user login then navigate to user screen
+        if (currentUser != null) {
+            val intent = Intent(this@LoginActivity, UsersActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString()

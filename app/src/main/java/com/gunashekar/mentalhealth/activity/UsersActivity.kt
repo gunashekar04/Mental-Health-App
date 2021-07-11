@@ -1,5 +1,6 @@
 package com.gunashekar.mentalhealth.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -22,6 +23,16 @@ class UsersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_users)
 
         userRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        imgBack.setOnClickListener {
+            onBackPressed()
+        }
+
+        imgProfile.setOnClickListener {
+            val intent = Intent(this@UsersActivity, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         getUsersList()
     }
 
@@ -40,19 +51,16 @@ class UsersActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
-//                val currentUser = snapshot.getValue(User::class.java)
-//                if (currentUser!!.profileImage == ""){
-//                    imgProfile.setImageResource(com.google.firebase.database.R.drawable.profile_image)
-//                }else{
-//                    Glide.with(this@UsersActivity).load(currentUser.profileImage).into(imgProfile)
-//                }
+                val currentUser = snapshot.getValue(User::class.java)
+                if (currentUser!!.profileImage == ""){
+                    imgProfile.setImageResource(R.drawable.profile_image)
+                }else{
+                    Glide.with(this@UsersActivity).load(currentUser.profileImage).into(imgProfile)
+                }
 
                 for (dataSnapShot in snapshot.children) {
                     val user = dataSnapShot.getValue(User::class.java)
-                    if (user != null) {
-                        Toast.makeText(applicationContext, user.Name, Toast.LENGTH_SHORT).show()
-                    }
-                    if (!user!!.uid.equals(firebase.uid) && user!!.Role.equals("Doctor")) {
+                    if (!user!!.uid.equals(firebase.uid) && user.Role.equals("Doctor")) {
                         userList.add(user)
                     }
                 }

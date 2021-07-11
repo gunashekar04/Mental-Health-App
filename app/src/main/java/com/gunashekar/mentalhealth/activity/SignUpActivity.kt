@@ -56,11 +56,9 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            Toast.makeText(applicationContext, "Login activity", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@SignUp,
-//                LoginActivity::class.java)
-//            startActivity(intent)
-//            finish()
+            val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }
@@ -86,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
 //                            etEmail.setText("")
 //                            etPassword.setText("")
 //                            etConfirmPassword.setText("")
-                            val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                            val intent = Intent(this@SignUpActivity, UsersActivity::class.java)
                             startActivity(intent)
                             finish()
                     }

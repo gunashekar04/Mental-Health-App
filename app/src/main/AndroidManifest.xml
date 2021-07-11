@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MentalHealth">
-        <activity android:name=".activity.UsersActivity"></activity>
+        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.UsersActivity" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SignUpActivity" />
-        <activity android:name=".activity.DoctorOrPatient"></activity>
+        <activity android:name=".activity.DoctorOrPatient" />
         <activity android:name=".activity.MainActivity" />
     </application>
 
