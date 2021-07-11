@@ -1,4 +1,4 @@
-package com.gunashekar.mentalhealth
+package com.gunashekar.mentalhealth.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.gunashekar.mentalhealth.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
                     .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
                             Toast.makeText(applicationContext, "Login success", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            val intent = Intent(this@LoginActivity, UsersActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {

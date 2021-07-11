@@ -1,8 +1,9 @@
-package com.gunashekar.mentalhealth
+package com.gunashekar.mentalhealth.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.gunashekar.mentalhealth.R
 import kotlinx.android.synthetic.main.activity_doctor_or_patient.*
 
 class DoctorOrPatient : AppCompatActivity() {

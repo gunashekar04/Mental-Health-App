@@ -1,7 +1,8 @@
-package com.gunashekar.mentalhealth
+package com.gunashekar.mentalhealth.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.gunashekar.mentalhealth.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
