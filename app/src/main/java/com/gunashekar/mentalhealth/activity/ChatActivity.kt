@@ -2,6 +2,7 @@ package com.gunashekar.mentalhealth.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,13 +10,21 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.gson.Gson
 import com.gunashekar.mentalhealth.R
+import com.gunashekar.mentalhealth.RetrofitInstance
 import com.gunashekar.mentalhealth.adapter.ChatAdapter
 import com.gunashekar.mentalhealth.model.Chat
+import com.gunashekar.mentalhealth.model.NotificationData
+import com.gunashekar.mentalhealth.model.PushNotification
 import com.gunashekar.mentalhealth.model.User
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_chat.imgBack
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.ArrayList
 
 class ChatActivity : AppCompatActivity() {
@@ -23,6 +32,7 @@ class ChatActivity : AppCompatActivity() {
     var firebaseUser: FirebaseUser? = null
     var reference: DatabaseReference? = null
     var chatList = ArrayList<Chat>()
+    var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +42,7 @@ class ChatActivity : AppCompatActivity() {
 
         var intent = getIntent()
         var userId = intent.getStringExtra("userId")
+        var userName = intent.getStringExtra("userName")
 
         imgBack.setOnClickListener {
             onBackPressed()
@@ -66,11 +77,12 @@ class ChatActivity : AppCompatActivity() {
             } else {
                 sendMessage(firebaseUser!!.uid, userId, message)
                 etMessage.setText("")
-//                topic = "/topics/$userId"
-//                PushNotification(NotificationData( userName!!,message),
-//                    topic).also {
-//                    sendNotification(it)
-//                }
+                topic = "/topics/$userId"
+                PushNotification(
+                    NotificationData( userName!!,message),
+                    topic).also {
+                    sendNotification(it)
+                }
 
             }
         }
@@ -100,7 +112,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                chatList.clear()
                 for (dataSnapShot: DataSnapshot in snapshot.children) {
                     val chat = dataSnapShot.getValue(Chat::class.java)
 
@@ -115,5 +127,18 @@ class ChatActivity : AppCompatActivity() {
                 chatRecyclerView.adapter = chatAdapter
             }
         })
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d("TAG", "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e("TAG", response.errorBody()!!.string())
+            }
+        } catch(e: Exception) {
+            Log.e("TAG", e.toString())
+        }
     }
 }
